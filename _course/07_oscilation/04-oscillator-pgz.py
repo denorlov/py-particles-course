@@ -2,7 +2,7 @@ import math
 import random
 
 import pgzrun
-from pygame.math import Vector2 as vec
+from pygame.math import Vector2 as Vec
 
 WIDTH = 1000
 HEIGHT = 500
@@ -44,9 +44,10 @@ class Oscillator:
 
 particles = [
     Oscillator(
-        pos=vec(X0 + i * 10 - 100, Y0 + i * 10 - 100),
-        ampl=vec(random.randint(100, 120), random.randint(100, 120)),
-        period=vec(random.randint(100, 120), random.randint(100, 120))
+        # pos=vec(X0 + i * 10 - 100, Y0 + i * 10 - 100),
+        pos = Vec(X0, Y0),
+        ampl=Vec(random.randint(100, 120), random.randint(100, 120)),
+        period=Vec(random.randint(100, 120), random.randint(100, 120))
     ) for i in range(30)
 ]
 

@@ -11,7 +11,7 @@ GRIDSIZE = 32
 FPS = 60
 
 MOB_SIZE = 10
-NUM_MOBS = 1000
+NUM_MOBS = 2000
 
 # define colors
 WHITE = (255, 255, 255)

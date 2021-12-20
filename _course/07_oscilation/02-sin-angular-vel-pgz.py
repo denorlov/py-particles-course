@@ -6,6 +6,7 @@ from pygame.math import Vector2
 
 WIDTH = 1000
 HEIGHT = 500
+
 X0 = WIDTH // 2
 Y0 = HEIGHT // 2
 

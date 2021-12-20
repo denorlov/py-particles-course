@@ -1,5 +1,8 @@
+# Encapsulate the above examples into a Wave class and create a sketch that displays two waves
+# (with different amplitudes/periods) as in the screenshot below.
+# Move beyond plain circles and lines and try visualizing the wave in a more creative way.
+
 import math
-import random
 
 import pgzrun
 from pygame.math import Vector2 as vec
@@ -42,7 +45,8 @@ class Oscillator:
         # screen.draw.circle(pos=(WIDTH//2, HEIGHT//2), radius=10, color=(255, 222, 255))
 
 particles = [
-    Oscillator(pos=vec(i * 10 - 100, Y0), ampl=vec(0, 10), period=vec(1, 200)) for i in range(150)
+    Oscillator(pos=vec(i * 10 - 100, Y0), ampl=vec(0, 10), period=vec(1, 200))
+    for i in range(150)
 ]
 
 def update():

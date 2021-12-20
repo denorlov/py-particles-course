@@ -1,5 +1,4 @@
 import math
-import random
 
 import pgzrun
 from pygame.math import Vector2 as vec

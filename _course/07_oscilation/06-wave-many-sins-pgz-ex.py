@@ -1,5 +1,7 @@
+# More complex waves can be produced by the values of multiple waves together.
+# Create a sketch that implements this, as in the screenshot below.
+
 import math
-import random
 
 import pgzrun
 from pygame.math import Vector2 as vec
