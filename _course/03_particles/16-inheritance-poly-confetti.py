@@ -1,0 +1,123 @@
+import random
+
+import pgzrun
+from pgzero.rect import Rect
+from pygame.math import Vector2
+
+WIDTH = 1000
+HEIGHT = 500
+
+X0 = WIDTH // 2
+Y0 = HEIGHT // 2
+
+class Particle:
+    def __init__(self, pos, velocity, acc, top_velocity_limit, mass):
+        self.pos = pos
+        self.velocity = velocity
+        self.acc = acc
+        self.top_velocity_limit = top_velocity_limit
+        self.mass = mass
+        self.lifetime = 255
+
+    def apply_force(self, force):
+        self.acc += force / self.mass
+
+    def is_alive(self):
+        return self.lifetime > 0
+
+    def update(self):
+        self.lifetime -= 2
+
+        self.velocity += self.acc
+        if self.velocity.length() > self.top_velocity_limit:
+            self.velocity.scale_to_length(self.top_velocity_limit)
+
+        self.pos += self.velocity
+
+    def draw(self):
+        screen.draw.filled_circle(pos=self.pos, radius=self.mass, color=(0, 255 / (255 / self.lifetime), 0))
+        # screen.draw.line(self.pos, self.pos + self.velocity * 20, color=(0, 255, 0))
+        # screen.draw.line(self.pos, self.pos + self.acc * 100, color=(255, 255, 0))
+        # screen.draw.text(f"{self.lifetime}", self.pos)
+
+class Confetti(Particle):
+    def __init__(self, pos, velocity, acc, top_velocity_limit, mass):
+        super().__init__(pos, velocity, acc, top_velocity_limit, mass)
+
+    def update(self):
+        super().update()
+
+    def draw(self):
+        screen.draw.filled_rect(
+            rect=Rect(self.pos.x - 8, self.pos.y - 8, 8 * 2, 8 * 2), color=(255, 255, 0)
+        )
+
+
+class ParticlesSytem:
+    def __init__(self):
+        self.particles = [self.create_particle() for _ in range(100)]
+        self.confetti = [self.create_confetti() for _ in range(100)]
+
+    def create_particle(self) -> Particle:
+        return Particle(
+            pos=Vector2(X0, Y0 - 100),
+            velocity=Vector2(random.uniform(-3, 3), random.uniform(-3, 0)),
+            acc=Vector2(0, 0.05),
+            top_velocity_limit=10,
+            mass=random.randint(1, 10)
+        )
+
+    def create_confetti(self) -> Confetti:
+        return Confetti(
+            pos=Vector2(X0, Y0 - 100),
+            velocity=Vector2(random.uniform(-3, 3), random.uniform(-3, 0)),
+            acc=Vector2(0, 0.05),
+            top_velocity_limit=10,
+            mass=random.randint(1, 10)
+        )
+
+    def update(self):
+        self.particles.append(self.create_particle())
+
+        to_delete = []
+        for p in self.particles:
+            if p.is_alive():
+                p.update()
+            else:
+                to_delete.append(p)
+
+        self.particles[:] = [p for p in self.particles if p not in to_delete]
+
+        self.confetti.append(self.create_confetti())
+
+        to_delete = []
+        for c in self.confetti:
+            if c.is_alive():
+                c.update()
+            else:
+                to_delete.append(c)
+
+        self.confetti[:] = [c for c in self.confetti if c not in to_delete]
+
+
+    def draw(self):
+        for p in self.particles:
+            if p.is_alive():
+                p.draw()
+
+        for conf in self.confetti:
+            if conf.is_alive():
+                conf.draw()
+
+ps = ParticlesSytem()
+
+def update():
+    ps.update()
+
+def draw():
+    screen.fill((0, 0, 0))
+    screen.draw.text(f"particles:{len(ps.particles)}", (0,0))
+    screen.draw.text(f"confetti:{len(ps.confetti)}", (0,10))
+    ps.draw()
+
+pgzrun.go()
