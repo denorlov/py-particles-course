@@ -28,13 +28,13 @@ running = True
 font = pygame.font.Font("assets/Retro Gaming.ttf", 16)
 font2 = pygame.font.Font("assets/Retro Gaming.ttf", 32)
 
-res = 4
+res = 1
 bsurf = pygame.Surface((1280//res, 720//res), pygame.SRCALPHA).convert_alpha()
 
 hint = pygame.Surface((380, 90), pygame.SRCALPHA).convert_alpha()
 
 hint.blit(font2.render("CLICK & DRAG", False, (44, 38, 64)), (70, 28))
-hint.blit(pygame.transform.scale(pygame.image.load("assets/cursor.png"), (369 // 8, 582 // 8)), (10, 10))
+#hint.blit(pygame.transform.scale(pygame.image.load("assets/cursor.png"), (369 // 8, 582 // 8)), (10, 10))
 
 # you can change the palette
 palette = ((255, 255, 0),
@@ -154,14 +154,17 @@ while running:
 
     for p in particles:
         p.life -= 1
-        if p.life == 0: dead.append(p); continue
+        if p.life == 0:
+            dead.append(p)
+            continue
 
         i = int((p.life/p.maxlife)*6)
 
         p.y -= sliders[2].val
         p.x += ((p.sin * sin(j/(p.sinr)))/2)*sliders[3].val + sliders[4].val
 
-        if not randint(0, 5): p.r += 0.88
+        if not randint(0, 5):
+            p.r += 0.88
 
         x, y = p.x, p.y
 
@@ -183,7 +186,7 @@ while running:
 
     window.blit(pygame.transform.scale(bsurf, (1280, 720)), (0, 0))
 
-    blur(window, (0, 0), (180, 720))
+    #blur(window, (0, 0), (180, 720))
 
     window.blit(uisurf, (0, 0))
     window.blit(font.render(f"FPS: {int(clock.get_fps())}", False, (251, 250, 252)), (11, 6))

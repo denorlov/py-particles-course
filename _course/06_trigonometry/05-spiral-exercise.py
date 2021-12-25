@@ -2,6 +2,10 @@
 # Start in the center and move outwards.
 # Note that this can be done by only changing one line of code and adding one line of code!
 
+# Используйте за основу предыдущий пример. Нарисуйте спираль.
+# Спираль начинается в центре и раскручивается к краям экрана.
+# Это можно сделать поменяв одну единственную строчку кода предыдущего примера.
+
 import math
 import random
 

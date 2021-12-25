@@ -1,8 +1,6 @@
-import math
 import random
 
 import pgzrun
-import pygame
 from pgzero.constants import mouse
 from pygame.math import Vector2
 

@@ -11,11 +11,13 @@
 import random
 import time
 
+import pgzrun
+
 HEIGHT = 500                # window height
-WIDTH = 900                 # window width
+WIDTH = 1000                 # window width
 MARGIN = 150                # disstance to start avoid edge
 
-NUM_BOIDS = 75
+NUM_BOIDS = 150
 VISUAL_RANGE = 70           # radius of influence for most algoriths
 SPEED_LIMIT_UPPER = 13      # boids canonly fly so fast.
 SPEED_LIMIT_LOWER = 3       # boid will fall if flying too slow
@@ -29,8 +31,8 @@ MARGIN_FACTOR = 0.25+0.0j   # rate of turning away from edge
 
 HISTORY_LENGTH = 30
 
-BACK_COLOR = (0, 0, 90)
-BOID_COLOR = (255, 128, 128)
+BACK_COLOR = (0, 0, 0)
+BOID_COLOR = (0, 255, 0)
 BOID_SIZE = 8
 TRAIL_COLOR = (255, 255, 64)
 
@@ -114,7 +116,7 @@ class Boid:
         return
 
     def draw(boid):
-        screen.draw.filled_circle((boid.loc.real, boid.loc.imag), BOID_SIZE, BOID_COLOR)
+        screen.draw.circle((boid.loc.real, boid.loc.imag), BOID_SIZE, BOID_COLOR)
         tail = boid.loc + boid.vel * -1.8
         screen.draw.line(
             (boid.loc.real, boid.loc.imag),
@@ -160,3 +162,5 @@ def on_key_down(key, mod, unicode):
         init()
 
 init()
+pgzrun.go()
+

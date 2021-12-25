@@ -6,6 +6,8 @@
 
 import random
 
+import pgzrun
+
 HEIGHT = 600                # window height
 WIDTH = 700                 # window width
 MARGIN = 150                # disstance to start avoid edge
@@ -138,3 +140,5 @@ def update():
         # boid.history = boid.history.slice(-50);
 
 g_boids = init_boids()
+
+pgzrun.go()
