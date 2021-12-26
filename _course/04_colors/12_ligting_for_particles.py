@@ -35,7 +35,7 @@ class Particle:
 
 particles = []
 
-bg = pygame.image.load('../girl.jpg')
+bg = pygame.image.load('../assets/girl.jpg')
 
 # Loop ------------------------------------------------------- #
 is_running = True

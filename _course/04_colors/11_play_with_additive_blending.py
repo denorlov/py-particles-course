@@ -21,7 +21,7 @@ def circle_surf(radius, color):
 # [loc, velocity, timer]
 particles = []
 
-bg = pygame.image.load('../girl.jpg')
+bg = pygame.image.load('../assets/girl.jpg')
 
 # Loop ------------------------------------------------------- #
 while True:
