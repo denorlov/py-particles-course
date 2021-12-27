@@ -106,9 +106,19 @@ def update():
     # ps.apply_weight_force(gravity)
     ps.update()
 
+frame_count = 0
+
 def draw():
+    global frame_count
+    frame_count += 1
+
     #screen.fill((0, 0, 0))
     screen.blit(bg, (0, 0))
+
+    image_copy = image.copy()
+    image_copy.set_alpha(frame_count % 255)
+    screen.surface.blit(image_copy, (50, 50))
+
     screen.draw.text(f"particles:{len(ps.particles)}", (0, 0))
     ps.draw()
 

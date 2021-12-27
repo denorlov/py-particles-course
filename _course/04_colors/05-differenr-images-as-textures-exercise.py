@@ -1,3 +1,14 @@
+# Use an array of images and assign each Particle object a different image.
+# Even though single images are drawn by multiple particles,
+# make sure you don’t call loadImage() any more than you need to,
+# i.e. once for each image file.
+
+# Вместо одного изображения image воспользуйтесь несколькими.
+# Пусть каждая частица выбирает свое изображение из пред-заготовленного набора.
+# pygame.image.load() тяжела операция.
+# Убедитесь, что вы загружаете одну и туже картинку только один раз.
+# Несмотря на то, что одно и тоже изображение потребуется для отображения нескольких разных частиц.
+
 import random
 
 import pgzrun
@@ -14,7 +25,7 @@ X0 = WIDTH // 2
 Y0 = HEIGHT // 2
 G = 0.4
 
-image = pygame.image.load("../assets/texture.png").convert()
+image = pygame.image.load("../assets/texture.png").convert_alpha()
 bg = pygame.image.load('../assets/autumn_forest.jpg')
 
 class Particle:
@@ -46,7 +57,9 @@ class Particle:
     def draw(self):
         # color = (255 / (255 / self.lifetime), 255 / (255 / self.lifetime), 255 / (255 / self.lifetime))
         #screen.draw.filled_circle(pos=self.pos, radius=16, color=color)
-        screen.surface.blit(image, self.pos)
+        image_copy = image.copy()
+        image_copy.set_alpha(self.lifetime)
+        screen.surface.blit(image_copy, self.pos)
         # screen.draw.text(f"{self.lifetime}", self.pos)
 
 
@@ -104,10 +117,19 @@ def update():
     # ps.apply_weight_force(gravity)
     ps.update()
 
+frame_count = 0
+
 def draw():
+    global frame_count
+    frame_count += 1
+
     #screen.fill((0, 0, 0))
     screen.blit(bg, (0, 0))
-    screen.blit(image, (50, 50))
+
+    image_copy = image.copy()
+    image_copy.set_alpha(frame_count % 255)
+    screen.surface.blit(image_copy, (50, 50))
+
     screen.draw.text(f"particles:{len(ps.particles)}", (0, 0))
     ps.draw()
 
