@@ -19,8 +19,8 @@ clock = pygame.time.Clock()
 
 
 class FlameParticle:
-    alpha_layer_qty = 2
-    alpha_glow_difference_constant = 2
+    alpha_layer_qty = 3
+    alpha_glow_difference_constant = 1
 
     def __init__(self, x=SCREEN_WIDTH // 2, y=SCREEN_HEIGHT // 2, r=5):
         self.x = x

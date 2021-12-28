@@ -1,3 +1,14 @@
+# Use an array of images and assign each Particle object a different image.
+# Even though single images are drawn by multiple particles,
+# make sure you don’t call loadImage() any more than you need to,
+# i.e. once for each image file.
+
+# Вместо одного изображения image воспользуйтесь несколькими.
+# Пусть каждая частица выбирает свое изображение из пред-заготовленного набора.
+# pygame.image.load() тяжела операция.
+# Убедитесь, что вы загружаете одну и туже картинку только один раз.
+# Несмотря на то, что одно и тоже изображение потребуется для отображения нескольких разных частиц.
+
 import random
 
 import pgzrun
@@ -6,7 +17,7 @@ import pygame
 import util
 from pgzero.constants import mouse
 from pygame.math import Vector2
-from pygame.constants import *
+
 WIDTH = 1000
 HEIGHT = 500
 
@@ -14,11 +25,10 @@ X0 = WIDTH // 2
 Y0 = HEIGHT // 2
 G = 0.4
 
-bg = pygame.image.load('../assets/autumn_forest.jpg')
+image = pygame.image.load("../assets/fire.png").convert_alpha()
+image = pygame.transform.smoothscale(image, (256, 256))
 
-image = pygame.image.load("../assets/texture.png").convert_alpha()
-R, G, B = 255, 0, 0
-image.fill((R, G, B, 255), None, special_flags=BLEND_RGBA_MULT)
+bg = pygame.image.load('../assets/autumn_forest.jpg')
 
 class Particle:
     def __init__(self, pos, velocity, acc, top_velocity_limit, mass):
@@ -58,7 +68,7 @@ class Particle:
 class ParticlesSytem:
     def __init__(self, origin: Vector2):
         self.origin = origin
-        self.particles = [self.create_particle() for _ in range(200)]
+        self.particles = [self.create_particle() for _ in range(50)]
 
     def create_particle(self) -> Particle:
         vx = random.gauss(0, 1) * 0.3
@@ -97,7 +107,7 @@ class ParticlesSytem:
             if p.is_alive():
                 p.draw()
 
-ps = ParticlesSytem(Vector2(X0, Y0 + 200))
+ps = ParticlesSytem(Vector2(X0 - 200, Y0 + 200))
 
 def update():
     mx, my = pygame.mouse.get_pos()
@@ -119,11 +129,8 @@ def draw():
     screen.blit(bg, (0, 0))
 
     image_copy = image.copy()
-    screen.surface.blit(image, (5, 50))
-
     image_copy.set_alpha(frame_count % 255)
     screen.surface.blit(image_copy, (50, 50))
-
 
     screen.draw.text(f"particles:{len(ps.particles)}", (0, 0))
     ps.draw()

@@ -1,9 +1,3 @@
-# Try creating your own textures for different types of effects.
-# Can you make it look like fire, instead of smoke?
-
-# Попробуйте поменять текстуру, которая использовалась в предыдущем примере.
-# Попробуйте сделать огонь вместо дыма.
-
 import random
 
 import pgzrun
@@ -12,7 +6,7 @@ import pygame
 import util
 from pgzero.constants import mouse
 from pygame.math import Vector2
-
+from pygame.constants import *
 WIDTH = 1000
 HEIGHT = 500
 
@@ -20,8 +14,15 @@ X0 = WIDTH // 2
 Y0 = HEIGHT // 2
 G = 0.4
 
-image = pygame.image.load("../assets/texture.png").convert_alpha()
 bg = pygame.image.load('../assets/autumn_forest.jpg')
+
+image = pygame.image.load("../assets/texture.png").convert_alpha()
+
+# color to tint
+R, G, B = 255, 0, 0
+# This causes that the all the pixels of the image are multiplied by the color,
+# rather then set by the color:
+image.fill((R, G, B, 255), None, special_flags=BLEND_RGBA_MULT)
 
 class Particle:
     def __init__(self, pos, velocity, acc, top_velocity_limit, mass):
@@ -122,8 +123,11 @@ def draw():
     screen.blit(bg, (0, 0))
 
     image_copy = image.copy()
+    screen.surface.blit(image, (5, 50))
+
     image_copy.set_alpha(frame_count % 255)
     screen.surface.blit(image_copy, (50, 50))
+
 
     screen.draw.text(f"particles:{len(ps.particles)}", (0, 0))
     ps.draw()

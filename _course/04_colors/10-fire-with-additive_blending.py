@@ -1,12 +1,19 @@
+# Try creating your own textures for different types of effects.
+# Can you make it look like fire, instead of smoke?
+
+# Попробуйте поменять текстуру, которая использовалась в предыдущем примере.
+# Попробуйте сделать огонь вместо дыма.
+
 import random
 
 import pgzrun
 import pygame
+from pygame.constants import BLEND_RGBA_ADD
 
 import util
 from pgzero.constants import mouse
 from pygame.math import Vector2
-from pygame.constants import *
+
 WIDTH = 1000
 HEIGHT = 500
 
@@ -14,14 +21,13 @@ X0 = WIDTH // 2
 Y0 = HEIGHT // 2
 G = 0.4
 
+image = pygame.image.load("../assets/fire.png").convert_alpha()
+image = pygame.transform.smoothscale(image, (100, 100))
+
 bg = pygame.image.load('../assets/autumn_forest.jpg')
 
-image = pygame.image.load("../assets/texture.png").convert_alpha()
-R, G, B = 255, 0, 0
-image.fill((R, G, B, 255), None, special_flags=BLEND_RGBA_MULT)
-
 class Particle:
-    def __init__(self, pos, velocity, acc, top_velocity_limit, mass):
+    def __init__(self, pos, velocity, acc, top_velocity_limit, mass=1):
         self.pos = pos
         self.velocity = velocity
         self.acc = acc
@@ -51,25 +57,23 @@ class Particle:
         #screen.draw.filled_circle(pos=self.pos, radius=16, color=color)
         image_copy = image.copy()
         image_copy.set_alpha(self.lifetime)
-        screen.surface.blit(image_copy, self.pos)
+        screen.surface.blit(image_copy, self.pos, special_flags=BLEND_RGBA_ADD)
         # screen.draw.text(f"{self.lifetime}", self.pos)
 
 
 class ParticlesSytem:
     def __init__(self, origin: Vector2):
         self.origin = origin
-        self.particles = [self.create_particle() for _ in range(200)]
+        self.particles = [self.create_particle() for _ in range(10)]
 
     def create_particle(self) -> Particle:
-        vx = random.gauss(0, 1) * 0.3
+        pos = Vector2(self.origin + Vector2(random.gauss(0, 1) * 10, 0))
+
+        vx = random.gauss(0, 1) * 0.1
         vy = random.gauss(0, 1) * 0.3 - 1
-        return Particle(
-            pos=Vector2(self.origin),
-            velocity=Vector2(vx, vy),
-            acc=Vector2(0, 0),
-            top_velocity_limit=100,
-            mass=1
-        )
+        velocity = Vector2(vx, vy)
+
+        return Particle(pos, velocity, acc=Vector2(0, 0), top_velocity_limit=100)
 
     def apply_force(self, force:Vector2):
         for p in self.particles:
@@ -97,7 +101,7 @@ class ParticlesSytem:
             if p.is_alive():
                 p.draw()
 
-ps = ParticlesSytem(Vector2(X0, Y0 + 200))
+ps = ParticlesSytem(Vector2(X0 - 200, Y0 + 160))
 
 def update():
     mx, my = pygame.mouse.get_pos()
@@ -109,23 +113,10 @@ def update():
     # ps.apply_weight_force(gravity)
     ps.update()
 
-frame_count = 0
-
 def draw():
-    global frame_count
-    frame_count += 1
-
-    #screen.fill((0, 0, 0))
     screen.blit(bg, (0, 0))
-
-    image_copy = image.copy()
-    screen.surface.blit(image, (5, 50))
-
-    image_copy.set_alpha(frame_count % 255)
-    screen.surface.blit(image_copy, (50, 50))
-
-
     screen.draw.text(f"particles:{len(ps.particles)}", (0, 0))
+
     ps.draw()
 
 pgzrun.go()
