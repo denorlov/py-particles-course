@@ -1,8 +1,5 @@
-# Try creating your own textures for different types of effects.
-# Can you make it look like fire, instead of smoke?
-
-# Попробуйте поменять текстуру, которая использовалась в предыдущем примере.
-# Попробуйте сделать огонь вместо дыма.
+# Blending modes description:
+# https://github.com/atizo/pygame/blob/master/src/surface.h
 
 import random, pygame
 

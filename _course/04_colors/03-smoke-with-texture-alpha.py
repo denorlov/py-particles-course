@@ -14,7 +14,7 @@ X0 = WIDTH // 2
 Y0 = HEIGHT // 2
 G = 0.4
 
-image = pygame.image.load("../assets/texture.png").convert()
+image = pygame.image.load("../assets/texture.png").convert_alpha()
 bg = pygame.image.load('../assets/autumn_forest.jpg')
 
 class Particle:

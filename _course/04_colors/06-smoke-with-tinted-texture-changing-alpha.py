@@ -1,3 +1,6 @@
+# Blending modes description:
+# https://github.com/atizo/pygame/blob/master/src/surface.h
+
 import random
 
 import pgzrun

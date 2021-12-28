@@ -63,7 +63,7 @@ class Particle:
 class ParticlesSytem:
     def __init__(self, origin: Vector2):
         self.origin = origin
-        self.particles = [self.create_particle() for _ in range(100)]
+        self.particles = [self.create_particle() for _ in range(50)]
 
     def create_particle(self) -> Particle:
         vx = random.gauss(0, 1) * 0.3
