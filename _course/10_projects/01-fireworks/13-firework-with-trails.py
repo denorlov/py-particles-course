@@ -2,8 +2,10 @@ import math
 import random
 
 import pgzrun
+import pygame
 from pygame.constants import *
 from pygame.math import Vector2
+from pygame.surface import Surface
 
 WIDTH = 1000
 HEIGHT = 500
@@ -38,13 +40,13 @@ class Particle:
 
             self.acc = Vector2(0, 0)
 
-    def draw(self):
+    def draw(self, surface:Surface):
         if self.is_alive():
             if self.is_firework:
                 color = (0, 255, 0)
             else:
                 color = (0, 255 / (255 / self.lifetime), 0)
-            screen.draw.filled_circle(pos=self.pos, radius=2, color=color)
+            pygame.draw.circle(surface, center=self.pos, radius=2, color=color)
             # screen.draw.text(f"life:{self.lifetime}", self.pos)
             # screen.draw.text(f"vel:{self.velocity}", self.pos + Vector2(0, 10))
 
@@ -74,11 +76,11 @@ class Firework:
             p.apply_force(GRAVITY_FORCE)
             p.update()
 
-    def draw(self):
+    def draw(self, surface:Surface):
         if not self.is_exploded:
-            self.firework.draw()
+            self.firework.draw(surface)
         for p in self.particles:
-            p.draw()
+            p.draw(surface)
 
     def explode(self):
         for i in range(50):
@@ -96,11 +98,16 @@ def update():
     if random.randint(0, 100) > 95:
         fireworks.append(Firework(Vector2(random.randint(0, WIDTH), HEIGHT - 10)))
 
+surface = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+
 def draw():
-    screen.surface.fill((0, 0, 0, 25), special_flags=BLEND_RGBA_MULT)
+    surface.fill((0, 0, 0, 25))
     screen.draw.text(f"fireworks:{len(fireworks)}", (10, 10))
 
     for firework in fireworks:
-        firework.draw()
+        firework.draw(surface)
+
+    #screen.surface.fill((255, 255, 255, 25), special_flags=BLEND_RGBA_MULT)
+    screen.blit(surface, pos=(0, 0))
 
 pgzrun.go()
