@@ -1,4 +1,7 @@
 import math
+import random
+
+from pygame import Vector2
 
 
 def rotate(origin, point, angle):
@@ -41,3 +44,7 @@ def linear_with_ranges(x, in_range=(0, 1), out_range=(0, 1)):
     both ranges are also possible.
     """
     return linear(x, in_range[0], in_range[1], out_range[0], out_range[1])
+
+def create_random_vector():
+    angle = random.uniform(0, 2.0 * math.pi)
+    return Vector2(math.cos(angle), math.sin(angle))

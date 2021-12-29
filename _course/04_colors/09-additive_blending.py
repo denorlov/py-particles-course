@@ -1,14 +1,10 @@
 # Blending modes description:
 # https://github.com/atizo/pygame/blob/master/src/surface.h
 
-import random, pygame
-
 import pgzrun
 import pygame
 
-import util
 from pygame.constants import *
-from pygame.math import Vector2
 
 WIDTH = 1000
 HEIGHT = 500

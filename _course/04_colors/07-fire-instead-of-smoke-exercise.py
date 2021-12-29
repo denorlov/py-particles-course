@@ -9,8 +9,7 @@ import random
 import pgzrun
 import pygame
 
-import util
-from pgzero.constants import mouse
+from _course import util
 from pygame.math import Vector2
 
 WIDTH = 1000

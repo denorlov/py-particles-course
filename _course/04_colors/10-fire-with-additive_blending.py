@@ -10,8 +10,7 @@ import pgzrun
 import pygame
 from pygame.constants import BLEND_RGBA_ADD
 
-import util
-from pgzero.constants import mouse
+from _course import util
 from pygame.math import Vector2
 
 WIDTH = 1000
