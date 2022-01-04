@@ -4,7 +4,7 @@ from random import uniform
 
 import pygame
 
-from wclib.constants import SIZE, ROOT_DIR
+from wclib import SIZE, ROOT_DIR
 
 __all__ = [
     "SIZE",

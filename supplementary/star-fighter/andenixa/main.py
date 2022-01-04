@@ -1,4 +1,3 @@
-import math
 import random
 import sys
 from pathlib import Path
@@ -20,7 +19,7 @@ except ImportError:
 
 # This line tells python how to handle the relative imports
 # when you run this file directly.
-__package__ = "star-fighter." + Path(__file__).parent.name
+__package__ = "supplementary.star-fighter." + Path(__file__).parent.name
 
 # ---- Recommended: don't modify anything above this line ---- #
 

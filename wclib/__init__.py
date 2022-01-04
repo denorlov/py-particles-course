@@ -1,2 +1,2 @@
 from .core import run
-from .constants import SIZE
+from .constants import SIZE, ROOT_DIR
