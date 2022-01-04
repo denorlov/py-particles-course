@@ -3,8 +3,7 @@ import random
 import pgzrun
 import pygame
 
-from _course import util
-
+from course import util
 from pygame.math import Vector2
 
 WIDTH = 1000
@@ -14,8 +13,8 @@ X0 = WIDTH // 2
 Y0 = HEIGHT // 2
 G = 0.4
 
+image = pygame.image.load("../assets/texture.png").convert()
 bg = pygame.image.load('../assets/autumn_forest.jpg')
-image = pygame.image.load("../assets/texture.png").convert_alpha()
 
 class Particle:
     def __init__(self, pos, velocity, acc, top_velocity_limit, mass):
@@ -46,9 +45,7 @@ class Particle:
     def draw(self):
         # color = (255 / (255 / self.lifetime), 255 / (255 / self.lifetime), 255 / (255 / self.lifetime))
         #screen.draw.filled_circle(pos=self.pos, radius=16, color=color)
-        image_copy = image.copy()
-        image_copy.set_alpha(self.lifetime)
-        screen.surface.blit(image_copy, self.pos)
+        screen.surface.blit(image, self.pos)
         # screen.draw.text(f"{self.lifetime}", self.pos)
 
 
@@ -106,22 +103,10 @@ def update():
     # ps.apply_weight_force(gravity)
     ps.update()
 
-frame_count = 0
-
 def draw():
-    global frame_count
-    frame_count += 1
-
     #screen.fill((0, 0, 0))
     screen.blit(bg, (0, 0))
-
-    image_copy = image.copy()
-    screen.surface.blit(image, (5, 50))
-
-    image_copy.set_alpha(frame_count % 255)
-    screen.surface.blit(image_copy, (50, 50))
-
-
+    screen.blit(image, (50, 50))
     screen.draw.text(f"particles:{len(ps.particles)}", (0, 0))
     ps.draw()
 

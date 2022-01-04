@@ -1,14 +1,12 @@
-# Blending modes description:
-# https://github.com/atizo/pygame/blob/master/src/surface.h
-
 import random
 
 import pgzrun
 import pygame
 
-from _course import util
+from course import util
+
 from pygame.math import Vector2
-from pygame.constants import *
+
 WIDTH = 1000
 HEIGHT = 500
 
@@ -17,14 +15,7 @@ Y0 = HEIGHT // 2
 G = 0.4
 
 bg = pygame.image.load('../assets/autumn_forest.jpg')
-
 image = pygame.image.load("../assets/texture.png").convert_alpha()
-
-# color to tint
-R, G, B = 255, 0, 0
-# This causes that the all the pixels of the image are multiplied by the color,
-# rather then set by the color:
-image.fill((R, G, B, 255), None, special_flags=BLEND_RGBA_MULT)
 
 class Particle:
     def __init__(self, pos, velocity, acc, top_velocity_limit, mass):

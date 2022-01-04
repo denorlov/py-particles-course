@@ -1,20 +1,9 @@
-# Use an array of images and assign each Particle object a different image.
-# Even though single images are drawn by multiple particles,
-# make sure you don’t call loadImage() any more than you need to,
-# i.e. once for each image file.
-
-# Вместо одного изображения image воспользуйтесь несколькими.
-# Пусть каждая частица выбирает свое изображение из пред-заготовленного набора.
-# pygame.image.load() тяжела операция.
-# Убедитесь, что вы загружаете одну и туже картинку только один раз.
-# Несмотря на то, что одно и тоже изображение потребуется для отображения нескольких разных частиц.
-
 import random
 
 import pgzrun
 import pygame
 
-from _course import util
+from course import util
 from pygame.math import Vector2
 
 WIDTH = 1000
@@ -24,9 +13,7 @@ X0 = WIDTH // 2
 Y0 = HEIGHT // 2
 G = 0.4
 
-image = pygame.image.load("../assets/fire.png").convert_alpha()
-image = pygame.transform.smoothscale(image, (256, 256))
-
+image = pygame.image.load("../assets/texture.png").convert_alpha()
 bg = pygame.image.load('../assets/autumn_forest.jpg')
 
 class Particle:
@@ -58,16 +45,14 @@ class Particle:
     def draw(self):
         # color = (255 / (255 / self.lifetime), 255 / (255 / self.lifetime), 255 / (255 / self.lifetime))
         #screen.draw.filled_circle(pos=self.pos, radius=16, color=color)
-        image_copy = image.copy()
-        image_copy.set_alpha(self.lifetime)
-        screen.surface.blit(image_copy, self.pos)
+        screen.surface.blit(image, self.pos)
         # screen.draw.text(f"{self.lifetime}", self.pos)
 
 
 class ParticlesSytem:
     def __init__(self, origin: Vector2):
         self.origin = origin
-        self.particles = [self.create_particle() for _ in range(50)]
+        self.particles = [self.create_particle() for _ in range(200)]
 
     def create_particle(self) -> Particle:
         vx = random.gauss(0, 1) * 0.3
@@ -106,7 +91,7 @@ class ParticlesSytem:
             if p.is_alive():
                 p.draw()
 
-ps = ParticlesSytem(Vector2(X0 - 200, Y0 + 200))
+ps = ParticlesSytem(Vector2(X0, Y0 + 200))
 
 def update():
     mx, my = pygame.mouse.get_pos()
@@ -118,19 +103,10 @@ def update():
     # ps.apply_weight_force(gravity)
     ps.update()
 
-frame_count = 0
-
 def draw():
-    global frame_count
-    frame_count += 1
-
     #screen.fill((0, 0, 0))
     screen.blit(bg, (0, 0))
-
-    image_copy = image.copy()
-    image_copy.set_alpha(frame_count % 255)
-    screen.surface.blit(image_copy, (50, 50))
-
+    screen.blit(image, (50, 50))
     screen.draw.text(f"particles:{len(ps.particles)}", (0, 0))
     ps.draw()
 

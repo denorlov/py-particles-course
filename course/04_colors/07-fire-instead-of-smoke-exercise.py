@@ -9,7 +9,7 @@ import random
 import pgzrun
 import pygame
 
-from _course import util
+from course import util
 from pygame.math import Vector2
 
 WIDTH = 1000

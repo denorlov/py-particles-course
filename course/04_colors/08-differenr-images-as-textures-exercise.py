@@ -1,16 +1,20 @@
-# Try creating your own textures for different types of effects.
-# Can you make it look like fire, instead of smoke?
+# Use an array of images and assign each Particle object a different image.
+# Even though single images are drawn by multiple particles,
+# make sure you don’t call loadImage() any more than you need to,
+# i.e. once for each image file.
 
-# Попробуйте поменять текстуру, которая использовалась в предыдущем примере.
-# Попробуйте сделать огонь вместо дыма.
+# Вместо одного изображения image воспользуйтесь несколькими.
+# Пусть каждая частица выбирает свое изображение из пред-заготовленного набора.
+# pygame.image.load() тяжела операция.
+# Убедитесь, что вы загружаете одну и туже картинку только один раз.
+# Несмотря на то, что одно и тоже изображение потребуется для отображения нескольких разных частиц.
 
 import random
 
 import pgzrun
 import pygame
-from pygame.constants import BLEND_RGBA_ADD
 
-from _course import util
+from course import util
 from pygame.math import Vector2
 
 WIDTH = 1000
@@ -21,12 +25,12 @@ Y0 = HEIGHT // 2
 G = 0.4
 
 image = pygame.image.load("../assets/fire.png").convert_alpha()
-image = pygame.transform.smoothscale(image, (100, 100))
+image = pygame.transform.smoothscale(image, (256, 256))
 
 bg = pygame.image.load('../assets/autumn_forest.jpg')
 
 class Particle:
-    def __init__(self, pos, velocity, acc, top_velocity_limit, mass=1):
+    def __init__(self, pos, velocity, acc, top_velocity_limit, mass):
         self.pos = pos
         self.velocity = velocity
         self.acc = acc
@@ -56,23 +60,25 @@ class Particle:
         #screen.draw.filled_circle(pos=self.pos, radius=16, color=color)
         image_copy = image.copy()
         image_copy.set_alpha(self.lifetime)
-        screen.surface.blit(image_copy, self.pos, special_flags=BLEND_RGBA_ADD)
+        screen.surface.blit(image_copy, self.pos)
         # screen.draw.text(f"{self.lifetime}", self.pos)
 
 
 class ParticlesSytem:
     def __init__(self, origin: Vector2):
         self.origin = origin
-        self.particles = [self.create_particle() for _ in range(10)]
+        self.particles = [self.create_particle() for _ in range(50)]
 
     def create_particle(self) -> Particle:
-        pos = Vector2(self.origin + Vector2(random.gauss(0, 1) * 10, 0))
-
-        vx = random.gauss(0, 1) * 0.1
+        vx = random.gauss(0, 1) * 0.3
         vy = random.gauss(0, 1) * 0.3 - 1
-        velocity = Vector2(vx, vy)
-
-        return Particle(pos, velocity, acc=Vector2(0, 0), top_velocity_limit=100)
+        return Particle(
+            pos=Vector2(self.origin),
+            velocity=Vector2(vx, vy),
+            acc=Vector2(0, 0),
+            top_velocity_limit=100,
+            mass=1
+        )
 
     def apply_force(self, force:Vector2):
         for p in self.particles:
@@ -100,7 +106,7 @@ class ParticlesSytem:
             if p.is_alive():
                 p.draw()
 
-ps = ParticlesSytem(Vector2(X0 - 200, Y0 + 160))
+ps = ParticlesSytem(Vector2(X0 - 200, Y0 + 200))
 
 def update():
     mx, my = pygame.mouse.get_pos()
@@ -112,10 +118,20 @@ def update():
     # ps.apply_weight_force(gravity)
     ps.update()
 
-def draw():
-    screen.blit(bg, (0, 0))
-    screen.draw.text(f"particles:{len(ps.particles)}", (0, 0))
+frame_count = 0
 
+def draw():
+    global frame_count
+    frame_count += 1
+
+    #screen.fill((0, 0, 0))
+    screen.blit(bg, (0, 0))
+
+    image_copy = image.copy()
+    image_copy.set_alpha(frame_count % 255)
+    screen.surface.blit(image_copy, (50, 50))
+
+    screen.draw.text(f"particles:{len(ps.particles)}", (0, 0))
     ps.draw()
 
 pgzrun.go()

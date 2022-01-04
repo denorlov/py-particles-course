@@ -2,7 +2,7 @@ import random
 
 import pgzrun
 import pygame
-import _course.util
+import course.util
 
 WIDTH = 1000
 HEIGHT = 500
@@ -57,7 +57,7 @@ class FireSystem:
         self.particle_acceleration = PARTICLE_ACCELERATION
         self.particles = []
         self.emitters = []
-        self.emitters.append(FireEmitter(pygame.mouse.get_pos()))
+        self.emitters.append(Emitter(pygame.mouse.get_pos()))
 
     def set_emitting(self, is_emitting):
         self.is_emitting = is_emitting
@@ -94,30 +94,22 @@ class FireSystem:
         self.particles.clear()
 
 
-class FireEmitter:
-    def __init__(self, position, emitter_velocity_factor=0):
+class Emitter:
+    def __init__(self, position):
         self.position = pygame.Vector2(position)
-        self.previous_position = pygame.Vector2(position)
         self.emission_timer = Timer(EMISSION_DELAY)
-        self.emitter_velocity_factor = emitter_velocity_factor
-        self.velocity = pygame.Vector2() if emitter_velocity_factor != 0 else None
 
-    def update(self, dt, mouse_position, is_emitting):
-        self.previous_position.update(self.position)
-        self.position.update(mouse_position)
-        if self.velocity is not None:
-            self.velocity.update(
-                (self.position - self.previous_position) / dt * self.emitter_velocity_factor
-            )
+    def update(self, dt, new_position, is_emitting):
+        self.position.update(new_position)
 
         if is_emitting:
-            n_new_particles = self.emission_timer.update(dt)
-            if n_new_particles > 0:
-                return self.emit(n_new_particles)
+            emit_particles_count = self.emission_timer.update(dt)
+            if emit_particles_count > 0:
+                return self.emit(emit_particles_count)
         return ()
 
-    def emit(self, n_particles):
-        return [FireParticle(self.position) for _ in range(n_particles)]
+    def emit(self, particles_count):
+        return [FireParticle(self.position) for _ in range(particles_count)]
 
 
 def make_particle_images():
@@ -167,7 +159,7 @@ class FireParticle:
             if self.time >= self.lifetime_limit:
                 self.is_alive = False
                 return
-            alpha = _course.util.linear(
+            alpha = course.util.linear(
                 self.time,
                 self.vanish_start_time, self.lifetime_limit,
                 255, 0

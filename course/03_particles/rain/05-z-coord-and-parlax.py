@@ -1,12 +1,10 @@
-# Нарисуйте капли дождя разной толщины. Чем больше Z координата, тем тоньше изображение капли
-
 import random
 
 import pgzrun
 import pygame
 from pygame.math import Vector2
 
-import _course.util
+import course.util
 
 WIDTH = 1000
 HEIGHT = 500
@@ -22,8 +20,8 @@ class Particle:
         self.mass = 1
         self.lifetime = 255
         self.z = random.randint(0, 20)
-        self.length = _course.util.linear(self.z, 0, 20, 10, 20)
-        self.velocity = Vector2(0, _course.util.linear(self.z, 0, 20, 4, 10))
+        self.length = course.util.linear(self.z, 0, 20, 10, 20)
+        self.velocity = Vector2(0, course.util.linear(self.z, 0, 20, 4, 10))
 
 
     def apply_force(self, force):
@@ -42,8 +40,7 @@ class Particle:
         self.pos += self.velocity
 
     def draw(self):
-        thick = _course.util.linear(self.z, 0, 20, 1, 4)
-        screen.draw.filled_rect(Rect(self.pos, (thick, self.length)), color=(0, 0, 255))
+        screen.draw.line(self.pos, self.pos + Vector2(0, self.length), color=(0, 0, 255))
 
 class RainSystem:
     def __init__(self):

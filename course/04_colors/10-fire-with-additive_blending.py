@@ -1,9 +1,16 @@
+# Try creating your own textures for different types of effects.
+# Can you make it look like fire, instead of smoke?
+
+# Попробуйте поменять текстуру, которая использовалась в предыдущем примере.
+# Попробуйте сделать огонь вместо дыма.
+
 import random
 
 import pgzrun
 import pygame
+from pygame.constants import BLEND_RGBA_ADD
 
-from _course import util
+from course import util
 from pygame.math import Vector2
 
 WIDTH = 1000
@@ -13,10 +20,13 @@ X0 = WIDTH // 2
 Y0 = HEIGHT // 2
 G = 0.4
 
+image = pygame.image.load("../assets/fire.png").convert_alpha()
+image = pygame.transform.smoothscale(image, (100, 100))
+
 bg = pygame.image.load('../assets/autumn_forest.jpg')
 
 class Particle:
-    def __init__(self, pos, velocity, acc, top_velocity_limit, mass):
+    def __init__(self, pos, velocity, acc, top_velocity_limit, mass=1):
         self.pos = pos
         self.velocity = velocity
         self.acc = acc
@@ -31,7 +41,7 @@ class Particle:
         return self.lifetime > 0
 
     def update(self):
-        self.lifetime -= 2
+        self.lifetime -= 2.5
 
         self.velocity += self.acc
         if self.velocity.length() > self.top_velocity_limit:
@@ -42,28 +52,27 @@ class Particle:
         self.acc = Vector2()
 
     def draw(self):
-        color = (255 / (255 / self.lifetime), 255 / (255 / self.lifetime), 255 / (255 / self.lifetime))
-        screen.draw.filled_circle(pos=self.pos, radius=10, color=color)
-        # screen.draw.line(self.pos, self.pos + self.velocity * 20, color=(0, 255, 0))
-        # screen.draw.line(self.pos, self.pos + self.acc * 100, color=(255, 255, 0))
+        # color = (255 / (255 / self.lifetime), 255 / (255 / self.lifetime), 255 / (255 / self.lifetime))
+        #screen.draw.filled_circle(pos=self.pos, radius=16, color=color)
+        image_copy = image.copy()
+        image_copy.set_alpha(self.lifetime)
+        screen.surface.blit(image_copy, self.pos, special_flags=BLEND_RGBA_ADD)
         # screen.draw.text(f"{self.lifetime}", self.pos)
 
 
 class ParticlesSytem:
     def __init__(self, origin: Vector2):
         self.origin = origin
-        self.particles = [self.create_particle() for _ in range(200)]
+        self.particles = [self.create_particle() for _ in range(10)]
 
     def create_particle(self) -> Particle:
-        vx = random.gauss(0, 1) * 0.3
+        pos = Vector2(self.origin + Vector2(random.gauss(0, 1) * 10, 0))
+
+        vx = random.gauss(0, 1) * 0.1
         vy = random.gauss(0, 1) * 0.3 - 1
-        return Particle(
-            pos=Vector2(self.origin),
-            velocity=Vector2(vx, vy),
-            acc=Vector2(0, 0),
-            top_velocity_limit=100,
-            mass=1
-        )
+        velocity = Vector2(vx, vy)
+
+        return Particle(pos, velocity, acc=Vector2(0, 0), top_velocity_limit=100)
 
     def apply_force(self, force:Vector2):
         for p in self.particles:
@@ -91,7 +100,7 @@ class ParticlesSytem:
             if p.is_alive():
                 p.draw()
 
-ps = ParticlesSytem(Vector2(X0 + 50, Y0 + 200))
+ps = ParticlesSytem(Vector2(X0 - 200, Y0 + 160))
 
 def update():
     mx, my = pygame.mouse.get_pos()
@@ -104,9 +113,9 @@ def update():
     ps.update()
 
 def draw():
-    #screen.fill((0, 0, 0))
     screen.blit(bg, (0, 0))
     screen.draw.text(f"particles:{len(ps.particles)}", (0, 0))
+
     ps.draw()
 
 pgzrun.go()

@@ -1,11 +1,14 @@
+# Blending modes description:
+# https://github.com/atizo/pygame/blob/master/src/surface.h
+
 import random
 
 import pgzrun
 import pygame
 
-from _course import util
+from course import util
 from pygame.math import Vector2
-
+from pygame.constants import *
 WIDTH = 1000
 HEIGHT = 500
 
@@ -13,8 +16,15 @@ X0 = WIDTH // 2
 Y0 = HEIGHT // 2
 G = 0.4
 
-image = pygame.image.load("../assets/texture.png").convert()
 bg = pygame.image.load('../assets/autumn_forest.jpg')
+
+image = pygame.image.load("../assets/texture.png").convert_alpha()
+
+# color to tint
+R, G, B = 255, 0, 0
+# This causes that the all the pixels of the image are multiplied by the color,
+# rather then set by the color:
+image.fill((R, G, B, 255), None, special_flags=BLEND_RGBA_MULT)
 
 class Particle:
     def __init__(self, pos, velocity, acc, top_velocity_limit, mass):
@@ -45,7 +55,9 @@ class Particle:
     def draw(self):
         # color = (255 / (255 / self.lifetime), 255 / (255 / self.lifetime), 255 / (255 / self.lifetime))
         #screen.draw.filled_circle(pos=self.pos, radius=16, color=color)
-        screen.surface.blit(image, self.pos)
+        image_copy = image.copy()
+        image_copy.set_alpha(self.lifetime)
+        screen.surface.blit(image_copy, self.pos)
         # screen.draw.text(f"{self.lifetime}", self.pos)
 
 
@@ -103,10 +115,22 @@ def update():
     # ps.apply_weight_force(gravity)
     ps.update()
 
+frame_count = 0
+
 def draw():
+    global frame_count
+    frame_count += 1
+
     #screen.fill((0, 0, 0))
     screen.blit(bg, (0, 0))
-    screen.blit(image, (50, 50))
+
+    image_copy = image.copy()
+    screen.surface.blit(image, (5, 50))
+
+    image_copy.set_alpha(frame_count % 255)
+    screen.surface.blit(image_copy, (50, 50))
+
+
     screen.draw.text(f"particles:{len(ps.particles)}", (0, 0))
     ps.draw()
 

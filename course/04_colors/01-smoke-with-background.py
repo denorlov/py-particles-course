@@ -3,7 +3,7 @@ import random
 import pgzrun
 import pygame
 
-from _course import util
+from course import util
 from pygame.math import Vector2
 
 WIDTH = 1000
@@ -12,6 +12,8 @@ HEIGHT = 500
 X0 = WIDTH // 2
 Y0 = HEIGHT // 2
 G = 0.4
+
+bg = pygame.image.load('../assets/autumn_forest.jpg')
 
 class Particle:
     def __init__(self, pos, velocity, acc, top_velocity_limit, mass):
@@ -29,7 +31,7 @@ class Particle:
         return self.lifetime > 0
 
     def update(self):
-        self.lifetime -= 2.5
+        self.lifetime -= 2
 
         self.velocity += self.acc
         if self.velocity.length() > self.top_velocity_limit:
@@ -41,7 +43,7 @@ class Particle:
 
     def draw(self):
         color = (255 / (255 / self.lifetime), 255 / (255 / self.lifetime), 255 / (255 / self.lifetime))
-        screen.draw.filled_circle(pos=self.pos, radius=16, color=color)
+        screen.draw.filled_circle(pos=self.pos, radius=10, color=color)
         # screen.draw.line(self.pos, self.pos + self.velocity * 20, color=(0, 255, 0))
         # screen.draw.line(self.pos, self.pos + self.acc * 100, color=(255, 255, 0))
         # screen.draw.text(f"{self.lifetime}", self.pos)
@@ -59,7 +61,7 @@ class ParticlesSytem:
             pos=Vector2(self.origin),
             velocity=Vector2(vx, vy),
             acc=Vector2(0, 0),
-            top_velocity_limit=10,
+            top_velocity_limit=100,
             mass=1
         )
 
@@ -89,7 +91,7 @@ class ParticlesSytem:
             if p.is_alive():
                 p.draw()
 
-ps = ParticlesSytem(Vector2(X0, Y0 + 200))
+ps = ParticlesSytem(Vector2(X0 + 50, Y0 + 200))
 
 def update():
     mx, my = pygame.mouse.get_pos()
@@ -102,8 +104,9 @@ def update():
     ps.update()
 
 def draw():
-    screen.fill((0, 0, 0))
-    screen.draw.text(f"particles:{len(ps.particles)}", (0,0))
+    #screen.fill((0, 0, 0))
+    screen.blit(bg, (0, 0))
+    screen.draw.text(f"particles:{len(ps.particles)}", (0, 0))
     ps.draw()
 
 pgzrun.go()
