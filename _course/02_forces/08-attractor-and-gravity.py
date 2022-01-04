@@ -52,9 +52,6 @@ class Particle:
 
     def draw(self):
         screen.draw.circle(pos=self.pos, radius=self.mass, color=(0, 255, 0))
-        # screen.draw.line(self.pos, self.pos + self.velocity * 20, color=(0, 255, 0))
-        # screen.draw.line(self.pos, self.pos + self.acc * 100, color=(255, 255, 0))
-        # screen.draw.text(f"p:{self.pos}, v: {self.velocity}, a:{self.acc}", self.pos)
 
 class Attractor:
     def __init__(self, pos, mass):

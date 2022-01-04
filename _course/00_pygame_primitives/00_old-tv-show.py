@@ -19,6 +19,10 @@ def draw():
     screen.fill((0, 0, 0))
     screen.draw.text("БЕЛЫЙ ШУМ", (X0 - 150, Y0), fontsize=60)
     for i in range(100):
-        screen.draw.filled_rect(Rect(random.random() * WIDTH, random.random() * HEIGHT, 2, 2), pygame.Color('white'))
+        x = random.random() * WIDTH
+        y = random.random() * HEIGHT
+        r = Rect(x, y, 2, 2)
+        c = pygame.Color('white')
+        screen.draw.filled_rect(r, c)
 
 pgzrun.go()

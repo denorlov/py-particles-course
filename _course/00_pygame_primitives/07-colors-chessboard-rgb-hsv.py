@@ -40,6 +40,6 @@ def draw():
                 color = color1
 
             screen.draw.filled_rect(Rect(i * SIDE + 2, j * SIDE + 2, SIDE - 4, SIDE - 4), color)
-            screen.draw.text(f"i,j={i},{j}", (i * SIDE, j * SIDE))
+            #screen.draw.text(f"i,j={i},{j}", (i * SIDE, j * SIDE))
 
 pgzrun.go()

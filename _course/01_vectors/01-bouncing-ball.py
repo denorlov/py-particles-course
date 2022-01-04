@@ -12,13 +12,12 @@ y = 100
 xspeed = 1
 yspeed = -3.3
 
-
 def update():
     global x, y
     global xspeed, yspeed
 
-    x += xspeed
-    y += yspeed
+    x = x + xspeed
+    y = y + yspeed
 
     if x < 0 or x > WIDTH:
         print("revert xsp")
@@ -31,10 +30,11 @@ def update():
 
 def draw():
     screen.fill((0, 0, 0))
+
     screen.draw.text(f"x:{x}, y:{y}", (0, 0))
     screen.draw.text(f"xsp:{xspeed}, ysp:{yspeed}", (0, 20))
 
-    screen.draw.circle(pos=(x, y), radius=10, color=(0, 255, 0))
+    screen.draw.filled_circle(pos=(x, y), radius=10, color=(0, 255, 255))
 
 pgzrun.go()
 
