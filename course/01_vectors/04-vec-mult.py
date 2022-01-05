@@ -20,7 +20,7 @@ def draw():
     mouse_vec = Vector2(pygame.mouse.get_pos())
     center_vec = Vector2(X0, Y0)
 
-    screen.draw.line(center_vec, center_vec + (mouse_vec - center_vec) / 3 , color=(0, 255, 0))
+    screen.draw.line(center_vec, center_vec + ((mouse_vec - center_vec) * 1.5) , color=(0, 255, 0))
 
 pgzrun.go()
 

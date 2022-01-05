@@ -84,7 +84,7 @@ class FireSystem:
         for particle in self.particles:
             self.fire_surface.blit(
                 particle.image,
-                particle.position,
+                particle.pos,
                 special_flags=pygame.BLEND_RGBA_ADD
             )
         target_surface.fill(BACKGROUND_COLOR)

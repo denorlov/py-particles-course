@@ -24,8 +24,7 @@ class Particle:
     def update(self):
         mouse_vec = Vector2(pygame.mouse.get_pos())
         self.acc = mouse_vec - self.pos
-        self.acc.normalize_ip()
-        self.acc = self.acc / 5
+        self.acc = self.acc / self.acc.length() / 5
 
         self.velocity += self.acc
         if self.velocity.length() > self.top_velocity_limit:
@@ -53,11 +52,11 @@ class Particle:
 
 particles = [
     Particle(
-        Vector2(random.randint(0, WIDTH), random.randint(0, HEIGHT)),
-        Vector2(0, 0),
-        Vector2(-0.001, 0.01),
-        10
-    ) for _ in range(3)
+        pos=Vector2(random.randint(0, WIDTH), random.randint(0, HEIGHT)),
+        velocity=Vector2(0, 0),
+        acc=Vector2(-0.001, 0.01),
+        top_velocity_limit=10
+    ) for _ in range(30)
 ]
 
 def update():

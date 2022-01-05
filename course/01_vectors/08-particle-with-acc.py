@@ -17,8 +17,8 @@ class Particle:
         self.acc = acc
 
     def update(self):
-        self.pos += self.velocity
-        self.velocity += self.acc
+        self.pos = self.pos + self.velocity
+        self.velocity = self.velocity + self.acc
 
         if self.pos.x < 0 or self.pos.x > WIDTH:
             self.velocity.x = self.velocity.x * -1

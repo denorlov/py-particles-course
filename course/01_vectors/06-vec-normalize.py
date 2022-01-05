@@ -24,8 +24,8 @@ def draw():
     target_vec.normalize_ip()
     target_vec *= 100
 
-    screen.draw.line(center_vec, center_vec + target_vec, color=(0, 255, 0))
-    screen.draw.rect(Rect((0, 0), (target_vec.length(), 10)), color=(0, 255, 0))
+    screen.draw.line(center_vec, center_vec + target_vec, color=(255, 255, 0))
+    screen.draw.filled_rect(Rect((0, 0), (target_vec.length(), 10)), color=(255, 255, 0))
 
 pgzrun.go()
 

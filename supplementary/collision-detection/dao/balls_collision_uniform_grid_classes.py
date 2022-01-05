@@ -49,8 +49,8 @@ class UniformGrid:
         self.grid = [[[]] * x_cells for _ in range(y_cells)]
 
     def add_mob(self, mob):
-        x_cell = int(mob.position.x / self.cell_size)
-        y_cell = int(mob.position.y / self.cell_size)
+        x_cell = int(mob.pos.x / self.cell_size)
+        y_cell = int(mob.pos.y / self.cell_size)
         mobs = self.grid[y_cell][x_cell]
         if mobs:
             mobs.append(mob)
@@ -59,8 +59,8 @@ class UniformGrid:
 
 
     def get_mobs(self, mob):
-        x_cell = int(mob.position.x / self.cell_size)
-        y_cell = int(mob.position.y / self.cell_size)
+        x_cell = int(mob.pos.x / self.cell_size)
+        y_cell = int(mob.pos.y / self.cell_size)
         return self.grid[y_cell][x_cell]
 
     def draw(self):
@@ -120,7 +120,7 @@ def update_mobs(mobs):
 def check_collisions(mobs):
     for mob in mobs: #1000
         mob.collisions.clear()
-        position = mob.position
+        position = mob.pos
 
         cell_mobs = uniform_grid.get_mobs(mob) #1000
 
@@ -129,7 +129,7 @@ def check_collisions(mobs):
                 continue
 
             rec1 = pgame.Rect(position, (MOB_SIZE, MOB_SIZE))
-            rec2 = pgame.Rect(other_mob.position, (MOB_SIZE, MOB_SIZE))
+            rec2 = pgame.Rect(other_mob.pos, (MOB_SIZE, MOB_SIZE))
             if rec1.colliderect(rec2):
                 mob.collisions.append(other_mob)
 

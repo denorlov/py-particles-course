@@ -17,7 +17,7 @@ class Particle:
         self.acc = acc
         self.top_velocity_limit = top_velocity_limit
 
-    def apply_force(self, force):
+    def apply_force(self, force:Vector2):
         self.acc += force
 
     def update(self):

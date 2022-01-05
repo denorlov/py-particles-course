@@ -45,7 +45,7 @@ class Particle:
 
     def draw(self):
         thick = course.util.linear(self.z, 0, 20, 1, 3)
-        screen.draw.filled_rect(Rect(self.pos, (thick, self.length)), color=(0, 0, 255))
+        screen.draw.filled_rect(Rect(self.pos, (thick, self.length)), color=(255, 255, 255))
 
 class RainSystem:
     def __init__(self):
