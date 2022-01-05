@@ -13,12 +13,12 @@ class Particle:
     def __init__(self, pos, velocity, mass=1):
         self.pos = pos
         self.velocity = velocity
-        self.acc = Vector2(0, 0),
+        self.acc = Vector2(0, 0)
         self.mass = mass
         self.lifetime = 255
 
     def apply_force(self, force):
-        self.acc += force / self.mass
+        self.acc = self.acc + force / self.mass
 
     def is_alive(self):
         return self.lifetime > 0
@@ -36,15 +36,17 @@ class Particle:
             screen.draw.filled_circle(pos=self.pos, radius=2, color=(0, 255 / (255 / self.lifetime), 0))
             screen.draw.text(f"{self.lifetime}", self.pos)
 
+
+gravity = Vector2(0.00001, 0.2)
+
 class ParticlesSytem:
-    gravity = Vector2(0, 0.2)
 
     def __init__(self, pos:Vector2):
         self.origin = pos
         self.particle = Particle(pos=Vector2(self.origin), velocity=Vector2(0, -20))
 
     def update(self):
-        self.particle.apply_force(ParticlesSytem.gravity)
+        self.particle.apply_force(gravity)
         self.particle.update()
 
     def draw(self):
