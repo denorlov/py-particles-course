@@ -16,6 +16,7 @@ G = 0.4
 
 bg = pygame.image.load('../assets/autumn_forest.jpg')
 image = pygame.image.load("../assets/texture.png").convert_alpha()
+image = pygame.transform.scale(image, (64, 64))
 
 class Particle:
     def __init__(self, pos, velocity, acc, top_velocity_limit, mass):
@@ -46,9 +47,8 @@ class Particle:
     def draw(self):
         # color = (255 / (255 / self.lifetime), 255 / (255 / self.lifetime), 255 / (255 / self.lifetime))
         #screen.draw.filled_circle(pos=self.pos, radius=16, color=color)
-        image_copy = image.copy()
-        image_copy.set_alpha(self.lifetime)
-        screen.surface.blit(image_copy, self.pos)
+        image.set_alpha(self.lifetime)
+        screen.surface.blit(image, self.pos - Vector2(64/2, 64/2))
         # screen.draw.text(f"{self.lifetime}", self.pos)
 
 
