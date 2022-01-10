@@ -52,6 +52,8 @@ particles = [
 ]
 
 def update():
+    global particles
+
     p = Particle(
         pos=Vector2(X0, Y0 - 100),
         velocity=Vector2(random.uniform(-3, 3), random.uniform(-3, 0)),
@@ -62,14 +64,13 @@ def update():
 
     particles.append(p)
 
-    to_delete = []
+    alive_particles = []
     for p in particles:
         if p.is_alive():
             p.update()
-        else:
-            to_delete.append(p)
+            alive_particles.append(p)
 
-    particles[:] = [p for p in particles if p not in to_delete]
+    particles = alive_particles
 
 def draw():
     screen.fill((0, 0, 0))
