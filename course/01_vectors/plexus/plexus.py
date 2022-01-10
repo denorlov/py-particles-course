@@ -1,3 +1,5 @@
+import os
+
 from math import sqrt
 from random import randint, uniform
 
@@ -7,14 +9,13 @@ import pygame
 from pygame.surface import Surface
 from pygame.math import Vector2
 
-WIDTH = 1920
-HEIGHT = 1080
+WIDTH = 1000
+HEIGHT = 600
 
 FPS = 60
-BLACK = (0, 0, 0)
 
 VELOCITY = 0.8
-MAX_DISTANCE = 200
+MAX_DISTANCE = HEIGHT // 5
 
 is_in_full_screen = False
 
@@ -68,7 +69,7 @@ class Particle:
 
 def map_color(distance, max_distance):
     x = int((max_distance - distance) * 255 / max_distance)
-    return x, x, 0
+    return x, 0, 0
 
 
 particles = [
