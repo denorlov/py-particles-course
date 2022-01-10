@@ -53,10 +53,11 @@ class Particle:
             self.pos.y = HEIGHT
 
     def draw(self):
-        screen.draw.circle(pos=self.pos, radius=self.mass * 2, color=(0, 255 / (255/self.lifetime), 0))
-        # screen.draw.line(self.pos, self.pos + self.velocity * 20, color=(0, 255, 0))
-        # screen.draw.line(self.pos, self.pos + self.acc * 100, color=(255, 255, 0))
-        screen.draw.text(f"p:{self.pos}, v: {self.velocity}, l: {self.lifetime}", self.pos)
+        if self.is_alive():
+            screen.draw.circle(pos=self.pos, radius=self.mass * 2, color=(0, 255 / (255/self.lifetime), 0))
+            # screen.draw.line(self.pos, self.pos + self.velocity * 20, color=(0, 255, 0))
+            # screen.draw.line(self.pos, self.pos + self.acc * 100, color=(255, 255, 0))
+            screen.draw.text(f"p:{self.pos}, v: {self.velocity}, l: {self.lifetime}", self.pos)
 
 particle = Particle(
         pos=Vector2(X0, Y0 - 100),
