@@ -24,11 +24,6 @@ class Particle:
         self.acc += force / self.mass
 
     def update(self):
-        # mouse_vec = Vector2(pygame.mouse.get_pos())
-        # self.acc = mouse_vec - self.pos
-        # self.acc.normalize_ip()
-        # self.acc = self.acc / 5
-
         self.velocity += self.acc
         if self.velocity.length() > self.top_velocity_limit:
             self.velocity.scale_to_length(self.top_velocity_limit)
@@ -45,25 +40,50 @@ class Particle:
             self.pos.y = HEIGHT
 
         if self.pos.y > HEIGHT:
-            self.pos.y = 0
+            self.velocity.y = -self.velocity.y
 
         self.acc = Vector2(0, 0)
 
     def draw(self):
-        screen.draw.circle(pos=self.pos, radius=self.mass, color=(255, 255, 0))
-        screen.draw.line(self.pos, self.pos + self.velocity * 20, color=(255, 255, 0))
-        screen.draw.line(self.pos, self.pos + self.acc * 100, color=(255, 255, 0))
-        #screen.draw.text(f"p:{self.pos}, v: {self.velocity}, a:{self.acc}", self.pos)
+        screen.draw.circle(pos=self.pos, radius=self.mass, color=(255, 255, 255))
+        if draw_debug:
+            screen.draw.line(self.pos, self.pos + self.velocity * 20, color=(0, 255, 255))
+            screen.draw.text(f"{self.velocity}", (self.pos))
 
-particles = [
-    Particle(
-        Vector2(random.randint(0, WIDTH), random.randint(0, HEIGHT)),
-        Vector2(0, 0),
-        Vector2(-0.001, 0.01),
-        10,
-        random.randint(5, 20)
-    ) for _ in range(3)
-]
+particles = []
+for i in range(50):
+    p = Particle(
+        pos=Vector2(X0, Y0 + 200),
+        velocity=Vector2(random.uniform(-1,1), random.uniform(-1,0)),
+        acc=Vector2(-0.001, 0.01),
+        top_velocity_limit=10,
+        mass=random.randint(1, 20)
+    )
+    particles.append(p)
+
+on_pause = False
+draw_debug = False
+
+def on_key_down(key):
+    print(key)
+
+    wind = Vector2(0,0)
+    if key == keys.RIGHT:
+        wind = Vector2(-0.5, 0)
+    elif key == keys.LEFT:
+        wind = Vector2(0.5, 0)
+
+    if wind.length() > 0:
+        for p in particles:
+            p.apply_force(wind)
+
+    global draw_debug
+    if key == keys.D:
+        draw_debug = not draw_debug
+
+    global on_pause
+    if key == keys.SPACE:
+        on_pause = not on_pause
 
 def on_mouse_down(button):
     if mouse.LEFT == button:
@@ -75,7 +95,11 @@ def on_mouse_down(button):
         p.apply_force(wind)
 
 def update():
+    if on_pause:
+        return
+
     gravity = Vector2(0, 0.01)
+
     for p in particles:
         p.apply_force(gravity)
         p.update()
