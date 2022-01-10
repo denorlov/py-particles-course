@@ -13,6 +13,18 @@ HEIGHT = 500
 X0 = WIDTH // 2
 Y0 = HEIGHT // 2
 
+is_in_full_screen = False
+
+def on_key_down(key):
+    global is_in_full_screen
+
+    if key == keys.F:
+        is_in_full_screen = not is_in_full_screen
+        if is_in_full_screen:
+            screen.surface = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+        else:
+            screen.surface = pygame.display.set_mode((WIDTH, HEIGHT))
+
 class Particle:
     def __init__(self, pos, velocity, hue, is_firework=True, mass=1):
         self.pos = pos
@@ -125,7 +137,6 @@ def draw():
     for firework in fireworks:
         firework.draw(surface)
 
-    #screen.surface.fill((255, 255, 255, 25), special_flags=BLEND_RGBA_MULT)
     screen.blit(surface, pos=(0, 0))
 
 pgzrun.go()

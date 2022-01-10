@@ -13,6 +13,10 @@ HEIGHT = 500
 X0 = WIDTH // 2
 Y0 = HEIGHT // 2
 
+background = pygame.image.load("../../assets/night-city-light.jpg")
+background = pygame.transform.scale(background, (WIDTH, HEIGHT))
+background.set_alpha(25)
+
 is_in_full_screen = False
 
 def on_key_down(key):
@@ -26,13 +30,14 @@ def on_key_down(key):
             screen.surface = pygame.display.set_mode((WIDTH, HEIGHT))
 
 class Particle:
-    def __init__(self, pos, velocity, is_firework=True, mass=1):
+    def __init__(self, pos, velocity, hue, is_firework=True, mass=1):
         self.pos = pos
         self.velocity = velocity
         self.acc = Vector2(0, 0)
         self.mass = mass
         self.is_firework = is_firework
-        self.lifetime = 255
+        self.lifetime = 100
+        self.hue = hue
 
     def apply_force(self, force):
         self.acc += force / self.mass
@@ -55,25 +60,34 @@ class Particle:
     def draw(self, surface:Surface):
         if self.is_alive():
             if self.is_firework:
-                color = (0, 255, 0)
+                color = pygame.Color(0, 0, 0, 0)
+                color.hsva = (self.hue, 100, 100, 100)
             else:
-                color = (0, 255 / (255 / self.lifetime), 0)
+                color = pygame.Color(0, 0, 0, 0)
+                color.hsva = (self.hue, 100, 100, self.lifetime)
             pygame.draw.circle(surface, center=self.pos, radius=2, color=color)
             # screen.draw.text(f"life:{self.lifetime}", self.pos)
             # screen.draw.text(f"vel:{self.velocity}", self.pos + Vector2(0, 10))
 
 def random_vector():
-    angle = random.uniform(0, 360)
-    return Vector2(1, 0).rotate(angle)
+    angle = random.uniform(0, 2.0 * math.pi)
+    rnd_vec = Vector2(math.cos(angle), math.sin(angle))
+    rnd_vec.normalize_ip()
+    return rnd_vec
 
 GRAVITY_FORCE = Vector2(0, 0.2)
 
 class Firework:
 
-    def __init__(self, pos:Vector2):
-        self.firework = Particle(pos=Vector2(pos), velocity=Vector2(0, random.randint(-12, -8)))
+    def __init__(self, pos:Vector2, hue):
+        self.firework = Particle(
+            pos=Vector2(pos),
+            velocity=Vector2(0, random.randint(-12, -8)),
+            hue=hue
+        )
         self.is_exploded = False
         self.particles = []
+        self.hue = hue
 
     def update(self):
         if not self.is_exploded:
@@ -98,7 +112,8 @@ class Firework:
             p = Particle(
                 pos=Vector2(self.firework.pos),
                 velocity=velocity,
-                is_firework=False
+                is_firework=False,
+                hue=self.hue
             )
             self.particles.append(p)
 
@@ -111,17 +126,24 @@ def update():
         firework.update()
 
     if random.randint(0, 100) > 95:
-        fireworks.append(Firework(Vector2(random.randint(0, WIDTH), HEIGHT - 10)))
+        f = Firework(
+            pos=Vector2(random.randint(0, WIDTH), HEIGHT - 10),
+            hue=random.randint(0, 360)
+        )
+        fireworks.append(f)
 
 surface = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
 
 def draw():
-    surface.fill((0, 0, 0, 25))
+#    surface.fill((0, 0, 0, 25))
+    surface.blit(background, (0, 0))
+
     screen.draw.text(f"fireworks:{len(fireworks)}", (10, 10))
 
     for firework in fireworks:
         firework.draw(surface)
 
+    #screen.surface.fill((255, 255, 255, 25), special_flags=BLEND_RGBA_MULT)
     screen.blit(surface, pos=(0, 0))
 
 pgzrun.go()
