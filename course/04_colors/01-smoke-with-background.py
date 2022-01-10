@@ -2,6 +2,7 @@ import random
 
 import pgzrun
 import pygame
+from pygame.surface import Surface
 
 from course import util
 from pygame.math import Vector2
@@ -13,7 +14,6 @@ X0 = WIDTH // 2
 Y0 = HEIGHT // 2
 G = 0.4
 
-bg = pygame.image.load('../assets/autumn_forest.jpg')
 
 class Particle:
     def __init__(self, pos, velocity, acc, top_velocity_limit, mass):
@@ -103,9 +103,11 @@ def update():
     # ps.apply_weight_force(gravity)
     ps.update()
 
+background_surface:Surface = pygame.image.load('../assets/autumn_forest.jpg')
+
 def draw():
     #screen.fill((0, 0, 0))
-    screen.blit(bg, (0, 0))
+    screen.surface.blit(background_surface, dest=(0, 0))
     screen.draw.text(f"particles:{len(ps.particles)}", (0, 0))
     ps.draw()
 
