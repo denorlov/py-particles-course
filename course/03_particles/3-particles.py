@@ -25,7 +25,13 @@ class Particle:
     def apply_force(self, force):
         self.acc += force / self.mass
 
+    def is_alive(self):
+        return self.lifetime > 0
+
     def update(self):
+        if not self.is_alive():
+            return
+
         self.lifetime -= 1
 
         self.velocity += self.acc
@@ -51,20 +57,23 @@ class Particle:
 
 
     def draw(self):
-        screen.draw.circle(pos=self.pos, radius=self.mass * 2, color=(0, 255, 0))
-        # screen.draw.line(self.pos, self.pos + self.velocity * 20, color=(0, 255, 0))
-        # screen.draw.line(self.pos, self.pos + self.acc * 100, color=(255, 255, 0))
-        #screen.draw.text(f"v: {self.velocity}, l:{self.lifetime}", self.pos)
+        if self.is_alive():
+            screen.draw.circle(pos=self.pos, radius=self.mass * 2, color=(0, 255 / (255/self.lifetime), 0))
+            # screen.draw.line(self.pos, self.pos + self.velocity * 20, color=(0, 255, 0))
+            # screen.draw.line(self.pos, self.pos + self.acc * 100, color=(255, 255, 0))
+            #screen.draw.text(f"v: {self.velocity}, l:{self.lifetime}", self.pos)
 
-particles = [
-    Particle(
+particles = []
+
+for _ in range(10):
+    p = Particle(
         pos=Vector2(X0, Y0 - 100),
         velocity=Vector2(random.uniform(-1, 1), random.uniform(-2, 0)),
         acc=Vector2(0, 0.05),
         top_velocity_limit=10,
         mass=random.randint(5, 10)
-    ) for _ in range(10)
-]
+    )
+    particles.append(p)
 
 def update():
     for p in particles:
