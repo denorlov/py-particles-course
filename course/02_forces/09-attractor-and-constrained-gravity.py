@@ -2,9 +2,6 @@ import math
 import random
 
 import pgzrun
-import pygame
-from pgzero.constants import mouse
-from pgzero.rect import Rect
 from pygame.math import Vector2
 
 WIDTH = 1000
@@ -94,25 +91,20 @@ particles = [
     ) for _ in range(10)
 ]
 
-#liquid = Liquid(Rect(0, Y0, WIDTH // 2, HEIGHT // 8), 0.1)
 attractor = Attractor(Vector2(X0, Y0), 20)
 
 c = 0.01
 
 def update():
-#    wind = Vector2(0.001, 0)
+    wind = Vector2(0.001, 0)
     for p in particles:
-#        p.apply_force(wind)
+        p.apply_force(wind)
 
-        # if liquid.is_inside(p.pos):
-        #     liquid.drag(p)
         attractor.attract(p)
-
         p.update()
 
 def draw():
     screen.fill((0, 0, 0))
-    # liquid.draw()
     attractor.draw()
     for p in particles:
         p.draw()
