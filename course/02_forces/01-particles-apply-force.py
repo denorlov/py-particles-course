@@ -11,22 +11,18 @@ X0 = WIDTH // 2
 Y0 = HEIGHT // 2
 
 class Particle:
-    def __init__(self, pos, velocity, acc, top_velocity_limit):
+    def __init__(self, pos:Vector2, velocity:Vector2, acc:Vector2, top_velocity_limit):
         self.pos = pos
         self.velocity = velocity
         self.acc = acc
         self.top_velocity_limit = top_velocity_limit
 
     def apply_force(self, force:Vector2):
-        self.acc += force
+        self.acc = self.acc + force
 
     def update(self):
-        # mouse_vec = Vector2(pygame.mouse.get_pos())
-        # self.acc = mouse_vec - self.pos
-        # self.acc.normalize_ip()
-        # self.acc = self.acc / 5
-
         self.velocity += self.acc
+
         if self.velocity.length() > self.top_velocity_limit:
             self.velocity.scale_to_length(self.top_velocity_limit)
 
@@ -47,10 +43,10 @@ class Particle:
         self.acc = Vector2(0, 0)
 
     def draw(self):
-        screen.draw.circle(pos=self.pos, radius=10, color=(0, 255, 0))
-        screen.draw.line(self.pos, self.pos + self.velocity * 20, color=(0, 255, 0))
-        screen.draw.line(self.pos, self.pos + self.acc * 100, color=(255, 255, 0))
-        screen.draw.text(f"p:{self.pos}, v: {self.velocity}, a:{self.acc}", self.pos)
+        screen.draw.circle(pos=self.pos, radius=10, color=(255, 255, 255))
+        # screen.draw.line(self.pos, self.pos + self.velocity * 20, color=(0, 255, 0))
+        # screen.draw.line(self.pos, self.pos + self.acc * 100, color=(255, 255, 0))
+        # screen.draw.text(f"p:{self.pos}, v: {self.velocity}, a:{self.acc}", self.pos)
 
 particles = [
     Particle(
@@ -72,8 +68,11 @@ def on_mouse_down(button):
 
 def update():
     gravity = Vector2(0, 0.01)
+    wind = -1 * Vector2(0.005, 0)
+
     for p in particles:
         p.apply_force(gravity)
+        p.apply_force(wind)
         p.update()
 
 def draw():
