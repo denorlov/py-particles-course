@@ -2,6 +2,7 @@ import random
 
 import pgzrun
 import pygame
+from pygame import transform
 
 from course import util
 from pygame.math import Vector2
