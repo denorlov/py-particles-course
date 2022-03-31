@@ -1,28 +1,26 @@
 import pgzrun
-import random
 
-import pygame
-from pgzero.rect import Rect
+WIDTH = 1000 # pgz создаст окно такой ширины
+HEIGHT = 500 # pgz создаст окно такой высоты
 
-WIDTH = 1000
-HEIGHT = 500
-
-X0 = WIDTH // 2
-Y0 = HEIGHT // 2
-
-# изменение свойств обьектов
+# изменение свойств обьектов. просто оставьте эту функцию без изменений
 def update():
     pass
 
-# отрисовка объектов
+# в этой функции производиться отрисовка всех наших объектов
 def draw():
-    screen.fill((0, 0, 0))
-    screen.draw.text("БЕЛЫЙ ШУМ", (X0 - 150, Y0), fontsize=60)
-    for i in range(100):
-        x = random.random() * WIDTH
-        y = random.random() * HEIGHT
-        r = Rect(x, y, 2, 2)
-        c = pygame.Color('white')
-        screen.draw.filled_rect(r, c)
+    rgb_color = (0, 0, 0)
+    # закрасить окно цветом rgb_color
+    screen.fill(rgb_color)
+    x_y_position = (500, 250)
+    screen.draw.text(
+        "МИРУ МИР",
+        x_y_position,
+        fontsize=60,
+        color=(255, 255, 0)
+    )
 
+# очень важная строка, которую нельзя ни в коем случае забывать
+# здесь мы инициализирем библиотеку pgz и она создает окно,
+# вызывает в цикле наши методы update() и draw()
 pgzrun.go()

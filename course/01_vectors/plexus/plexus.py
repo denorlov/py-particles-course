@@ -1,6 +1,3 @@
-import os
-
-from math import sqrt
 from random import randint, uniform
 
 import pgzrun
@@ -69,7 +66,7 @@ class Particle:
 
 def map_color(distance, max_distance):
     x = int((max_distance - distance) * 255 / max_distance)
-    return x, 0, 0
+    return 0, x, x
 
 
 particles = [

@@ -41,6 +41,6 @@ while eventType != pygame.QUIT:
     #if eventType == pygame.MOUSEBUTTONDOWN:
     draw(screen)
     pygame.display.flip()
-    eventType = pygame.event.wait().type
+    #eventType = pygame.event.wait().type
 
 pygame.quit()

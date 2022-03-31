@@ -125,7 +125,7 @@ def update():
     for firework in fireworks:
         firework.update()
 
-    if random.randint(0, 100) > 95:
+    if random.randint(0, 100) > 90:
         f = Firework(
             pos=Vector2(random.randint(0, WIDTH), HEIGHT - 10),
             hue=random.randint(0, 360)
